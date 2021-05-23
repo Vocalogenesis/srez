@@ -12,7 +12,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
 
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'status')->dropDownList(\app\modules\admin\models\Request::ListStatus())?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 

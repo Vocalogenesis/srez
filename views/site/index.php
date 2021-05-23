@@ -1,13 +1,27 @@
 <?php
 
 /* @var $this yii\web\View */
-
+use yii\widgets\Pjax;
+use yii\helpers\Html;
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
     
     <? if(!Yii::$app->user->isGuest) : ?>
 
+    <? Pjax::begin(['id' => 'requestsCount']); ?>
+
+        <?= '<h1>Принято заявок: '.$count.'</h1>'?>
+
+    <? Pjax::end(); ?>
+    <?php
+        $js = <<< JS
+        setInterval(() => {
+            $.pjax.reload({container: "#requestsCount", async: false});
+        }, 5000);
+        JS;
+        $this->registerJs($js);
+    ?>
     <p>
         <?= \yii\helpers\Html::a('Создать запрос', ['/front/create'], ['class' => 'btn btn-success']) ?>
     </p>

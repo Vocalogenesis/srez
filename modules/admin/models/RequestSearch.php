@@ -40,8 +40,12 @@ class RequestSearch extends Request
      */
     public function search($params)
     {
-        $query = Request::find();
-
+        // $query = Request::find();
+        if (\Yii::$app->user->identity->username == 'admin'){
+            $query = Request::find();
+        } else {
+            $query = Request::find()->where(['id' => \Yii::$app->user->identity->id]);
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([

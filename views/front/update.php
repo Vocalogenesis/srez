@@ -17,5 +17,20 @@ $this->params['breadcrumbs'][] = 'Сохранить';
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
+    <?php
+        
+        $js = <<<JS
+            $('.field-request-why_not').hide();
+            $('#request-status').on('change', ()=>{
+                if ($('#request-status').val() == 'Отклонена')
+                {
+                    $('.field-request-why_not').show();
+                } else {
+                    $('.field-request-why_not').hide();
+                }
+            });
+        JS;
+        $this->registerJs($js);
 
+    ?>
 </div>

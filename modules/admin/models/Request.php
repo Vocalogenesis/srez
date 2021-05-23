@@ -65,14 +65,20 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id'], 'required'],
+            [[ 'name','category_id', 'why_not'], 'required'],
             [['why_not'], 'string'],
             [['category_id', 'created_by', 'updated_by'], 'integer'],
             [['created_at'], 'safe'],
             [['status', 'name', 'before_img', 'after_img'], 'string', 'max' => 255],
-            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, jpeg, bmp', 'maxSize' => 10 * 1024 * 1024],
-            [['imageFile2'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, jpeg, bmp', 'maxSize' => 10 * 1024 * 1024],
+            [['imageFile1'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
+            [['imageFile2'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg, png, bmp', 'maxSize' => 10 * 1024 * 1024],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+
+            ['imageFile2', 'required', 'when' => function($model, $attribute) {
+                 return $model->status == 'Решена';
+          
+            }, 'enableClientValidation' => false],
+
         ];
     }
 
@@ -126,5 +132,21 @@ class Request extends \yii\db\ActiveRecord
         } else {
             return false;
         }
+    }
+    public static function ListStatus(){
+        
+        if (\Yii::$app->user->identity->username == 'admin'){
+            $arr = [
+                'Новая' => 'Новая',
+                'Решена' => 'Решена',
+                "Отклонена" => "Отклонена"
+            ];
+        } else {
+            $arr = [
+                'Новая' => 'Новая',
+                'Решена' => 'Решена'
+            ];
+        }
+        return $arr;
     }
 }

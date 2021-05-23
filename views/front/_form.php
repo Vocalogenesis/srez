@@ -11,8 +11,11 @@ use yii\widgets\ActiveForm;
 <div class="request-form">
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]) ?>
-
-    <?= $form->field($model, 'status')->textInput(['maxlength' => true]) ?>
+    <?php
+    if (\Yii::$app->user->identity->username == 'admin'){
+        echo $form->field($model, 'status')->dropDownList(\app\modules\admin\models\Request::ListStatus());
+    }
+    ?>
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
